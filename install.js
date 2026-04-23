@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-// claude-status — installer / uninstaller for the Claude Code status line.
+// claude-stat — installer / uninstaller for the Claude Code status line.
 //
 // Usage:
-//   npx claude-status              # install (default)
-//   npx claude-status install      # install (explicit)
-//   npx claude-status uninstall    # remove
+//   npx claude-stat              # install (default)
+//   npx claude-stat install      # install (explicit)
+//   npx claude-stat uninstall    # remove
 //
 // Also works from a cloned source tree: `node install.js [install|uninstall]`.
 //
@@ -22,7 +22,7 @@
 // Never touches other keys in settings.json. Never installs globally.
 // Requires only Node.js.
 //
-// Repo: https://github.com/waelmas/claude-status
+// Repo: https://github.com/waelmas/claude-stat
 
 const fs   = require('fs');
 const os   = require('os');
@@ -80,7 +80,7 @@ function install() {
   log(`✓ updated ${SETTINGS}`);
   log('');
   log('Done. Start a new Claude Code session (or reload) to see the new status line.');
-  log('Uninstall any time with:  npx claude-status uninstall');
+  log('Uninstall any time with:  npx claude-stat uninstall');
 }
 
 function uninstall() {
@@ -125,8 +125,8 @@ function uninstall() {
 
   log('');
   log(removedSomething
-    ? 'Done. claude-status has been removed. Your existing settings.json backups are preserved.'
-    : 'Nothing to uninstall. claude-status does not appear to be installed.');
+    ? 'Done. claude-stat has been removed. Your existing settings.json backups are preserved.'
+    : 'Nothing to uninstall. claude-stat does not appear to be installed.');
 }
 
 // ── Dispatch ─────────────────────────────────────────────────────────────────
@@ -144,14 +144,14 @@ switch (cmd) {
   case '-h':
   case '--help':
   case 'help':
-    log('claude-status — status line for Claude Code');
+    log('claude-stat — status line for Claude Code');
     log('');
     log('Usage:');
-    log('  npx claude-status             install (default)');
-    log('  npx claude-status install     install (explicit)');
-    log('  npx claude-status uninstall   remove statusline and clean up');
+    log('  npx claude-stat             install (default)');
+    log('  npx claude-stat install     install (explicit)');
+    log('  npx claude-stat uninstall   remove statusline and clean up');
     log('');
-    log('Repo: https://github.com/waelmas/claude-status');
+    log('Repo: https://github.com/waelmas/claude-stat');
     break;
   default:
     fail(`unknown command: ${cmd}. Try: install, uninstall, help.`);

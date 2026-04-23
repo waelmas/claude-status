@@ -1,4 +1,4 @@
-# claude-status - A Status Line for Claude Code
+# claude-stat - A Status Line for Claude Code
 
 **A compact, information-dense status line for [Claude Code](https://claude.com/claude-code) showing context window usage, rate limits, cache-hit percentage, model, effort level, git branch, and session totals. Zero dependencies - just Node.js.**
 
@@ -9,7 +9,7 @@
 ![Claude Code status line example showing project name, git branch, model, effort badge, context window bar, rate limits, and session token totals with cache hit percentage, shows claude chat too](./alt-example.png)
 
 
-`claude-status` replaces Claude Code's default status bar with a dense, color-coded read-out of everything that matters during a coding session: how much of your context window is used, how close you are to your 5-hour and 7-day rate limits, what percentage of input tokens came from the prompt cache (i.e., nearly free), plus the model, effort level, git state, and output style. It's a single ~270-line Node.js script - no npm dependencies, no background processes, no network calls.
+`claude-stat` replaces Claude Code's default status bar with a dense, color-coded read-out of everything that matters during a coding session: how much of your context window is used, how close you are to your 5-hour and 7-day rate limits, what percentage of input tokens came from the prompt cache (i.e., nearly free), plus the model, effort level, git state, and output style. It's a single ~270-line Node.js script - no npm dependencies, no background processes, no network calls.
 
 ## Features
 
@@ -27,7 +27,7 @@
 ### Option 1 - One-liner via npx (recommended)
 
 ```bash
-npx claude-status
+npx claude-stat
 ```
 
 This runs the installer from the npm package. No clone required. Re-run any time to update to the latest version.
@@ -35,8 +35,8 @@ This runs the installer from the npm package. No clone required. Re-run any time
 ### Option 2 - From source
 
 ```bash
-git clone https://github.com/waelmas/claude-status.git
-cd claude-status
+git clone https://github.com/waelmas/claude-stat.git
+cd claude-stat
 node install.js
 ```
 
@@ -71,7 +71,7 @@ Left to right, separated by `┃`:
 
 | Segment | Example | Meaning |
 |---|---|---|
-| **Project + branch** | `claude-status on main●` | Directory name + git branch. Orange `●` = uncommitted changes. Branch truncates at 22 chars. |
+| **Project + branch** | `claude-stat on main●` | Directory name + git branch. Orange `●` = uncommitted changes. Branch truncates at 22 chars. |
 | **Model + effort** | `Opus 4.7 XH` | Model name (strips parentheticals like `(1M context)`). Badge = effort level: `LO`·`MD`·`HI`·`XH`·`MX`, colored from meh (gray) → cost-danger (red). |
 | **Context bar** | `[██░░░░░░] 28.4% 284k/1.0M` | Fill bar for context-window usage. Color shifts green → lime → yellow → orange → red as you fill. Ceiling adapts to the active model. |
 | **Rate limits** | `5h:50%·3h  7d:54%·2d4h` | Claude.ai subscription quotas. `%` used + time until reset. Hidden for API-key users. |
@@ -148,7 +148,7 @@ Typical render time: **5–20 ms**.
 ## Uninstall
 
 ```bash
-npx claude-status uninstall
+npx claude-stat uninstall
 ```
 
 Or manually:
@@ -159,14 +159,14 @@ Or manually:
 
 ## FAQ
 
-**Q: Does claude-status work with both Claude.ai subscriptions and API keys?**
+**Q: Does claude-stat work with both Claude.ai subscriptions and API keys?**
 A: Yes. Rate-limit segments are automatically hidden when the `rate_limits` field is absent from the payload (the API-key case). Everything else - context window, model, cache stats - works identically.
 
 **Q: Does it work with Claude Code plugins, hooks, or output styles?**
 A: Yes. The installer only touches the `statusLine` key in `settings.json`. Hooks, plugins, permissions, env vars, and output styles are preserved. Non-default output styles show up as a `✳ style-name` badge.
 
 **Q: Why is my cache-hit percentage lower than expected?**
-A: Claude Code's prompt cache writes new entries at a *higher* token cost than reads (cache-write vs. cache-read pricing). `claude-status` counts cache-creation tokens in the denominator of the cache-hit % because they're billed (just at the write rate), so they're honestly "not a hit." Pure cache-read percentage would look higher but would overstate the cost savings.
+A: Claude Code's prompt cache writes new entries at a *higher* token cost than reads (cache-write vs. cache-read pricing). `claude-stat` counts cache-creation tokens in the denominator of the cache-hit % because they're billed (just at the write rate), so they're honestly "not a hit." Pure cache-read percentage would look higher but would overstate the cost savings.
 
 **Q: Can I use this with git worktrees?**
 A: Yes. When a Claude Code session is in a git worktree, the `⎇ worktree-name` badge appears. Branch, dirty state, and project name all resolve correctly inside worktrees.
@@ -174,8 +174,8 @@ A: Yes. When a Claude Code session is in a git worktree, the `⎇ worktree-name`
 **Q: Does it support vim mode?**
 A: Yes. When `input.vim.mode` is present, an `INS` (green) or `NRM` (yellow) badge appears.
 
-**Q: Is claude-status affiliated with Anthropic?**
-A: No. It's an independent open-source project. Claude Code is Anthropic's official CLI; `claude-status` is a community-built renderer for the `statusLine` extension point that Claude Code exposes.
+**Q: Is claude-stat affiliated with Anthropic?**
+A: No. It's an independent open-source project. Claude Code is Anthropic's official CLI; `claude-stat` is a community-built renderer for the `statusLine` extension point that Claude Code exposes.
 
 **Q: Does it run on Windows?**
 A: Yes, on Windows with Node.js installed. The installer uses cross-platform path joins. On Windows, the temp cache lives in `%TEMP%` instead of `/tmp`. Git commands work via the system `git` on PATH.
@@ -188,7 +188,7 @@ A: No. The cache-hit % calculation is memoized by transcript file size and store
 
 ## Contributing
 
-Issues and PRs welcome at [github.com/waelmas/claude-status](https://github.com/waelmas/claude-status). Scope is intentionally narrow: a fast, zero-dependency status line. New segments should keep the "5–20 ms render" budget.
+Issues and PRs welcome at [github.com/waelmas/claude-stat](https://github.com/waelmas/claude-stat). Scope is intentionally narrow: a fast, zero-dependency status line. New segments should keep the "5–20 ms render" budget.
 
 ## License
 

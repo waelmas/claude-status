@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-// claude-status — status line for Claude Code.
+// claude-stat — status line for Claude Code.
 // Model-aware context window + rate limits + cache-hit % + styled output.
 // Reads JSON from stdin, writes an ANSI-styled status line to stdout.
 //
-// Install: `npx claude-status` or `node install.js` from a clone.
-// Repo:    https://github.com/waelmas/claude-status
+// Install: `npx claude-stat` or `node install.js` from a clone.
+// Repo:    https://github.com/waelmas/claude-stat
 
 const fs   = require('fs');
 const os   = require('os');
