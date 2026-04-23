@@ -1,6 +1,6 @@
 {
   "name": "claude-stat",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A compact, information-dense status line for Claude Code. Shows context window usage, rate limits, prompt cache hit percentage, model, effort level, git branch, and session token totals. Zero dependencies.",
   "bin": {
     "claude-stat": "./install.js"
@@ -10,7 +10,9 @@
     "install.js",
     "statusline.js",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "example.png",
+    "alt-example.png"
   ],
   "scripts": {
     "install-statusline": "node install.js",
