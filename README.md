@@ -1,29 +1,30 @@
-# claude-status — A Status Line for Claude Code
+# claude-status - A Status Line for Claude Code
 
-**A compact, information-dense status line for [Claude Code](https://claude.com/claude-code) showing context window usage, rate limits, cache-hit percentage, model, effort level, git branch, and session totals. Zero dependencies — just Node.js.**
+**A compact, information-dense status line for [Claude Code](https://claude.com/claude-code) showing context window usage, rate limits, cache-hit percentage, model, effort level, git branch, and session totals. Zero dependencies - just Node.js.**
 
 ![Claude Code status line example showing project name, git branch, model, effort badge, context window bar, rate limits, and session token totals with cache hit percentage](./example.png)
 
-```
-agents-control-hub on main ┃ Opus 4.7 XH ┃ [██░░░░░░] 28.4% 284k/1.0M ┃ 5h:50%·3h 7d:54%·2d4h ┃ in↑12.2k(+98% cached) out↓353k
-```
 
-`claude-status` replaces Claude Code's default status bar with a dense, color-coded read-out of everything that matters during a coding session: how much of your context window is used, how close you are to your 5-hour and 7-day rate limits, what percentage of input tokens came from the prompt cache (i.e., nearly free), plus the model, effort level, git state, and output style. It's a single ~270-line Node.js script — no npm dependencies, no background processes, no network calls.
+
+![Claude Code status line example showing project name, git branch, model, effort badge, context window bar, rate limits, and session token totals with cache hit percentage, shows claude chat too](./alt-example.png)
+
+
+`claude-status` replaces Claude Code's default status bar with a dense, color-coded read-out of everything that matters during a coding session: how much of your context window is used, how close you are to your 5-hour and 7-day rate limits, what percentage of input tokens came from the prompt cache (i.e., nearly free), plus the model, effort level, git state, and output style. It's a single ~270-line Node.js script - no npm dependencies, no background processes, no network calls.
 
 ## Features
 
-- **Model-aware context window bar** — auto-detects the active model's ceiling (200k, 1M, etc.) from the Claude Code payload. Color shifts green → lime → yellow → orange → red as you fill.
-- **Live rate-limit display** — shows `%` used and time-until-reset for both the Claude.ai 5-hour and 7-day quotas. Hidden for API-key users.
-- **Cache-hit percentage** — parses the session transcript to compute the fraction of input tokens served from the prompt cache. Size-keyed cache keeps repaints cheap (typical render: 5–20 ms).
-- **Effort badge** — `LO`·`MD`·`HI`·`XH`·`MX` color-coded from cheap → cost-danger, read from `~/.claude/settings.json.effortLevel`.
-- **Git-aware** — directory name + branch, orange `●` for uncommitted changes, worktree badge when applicable.
-- **Conditional badges** — vim mode (INS/NRM), subagent name, git worktree, non-default output style.
-- **Zero dependencies** — pure Node.js standard library. No npm install, no background daemons.
-- **Non-destructive install** — backs up `~/.claude/settings.json` with a timestamped filename before touching it. Leaves hooks, plugins, env, and permissions untouched.
+- **Model-aware context window bar** - auto-detects the active model's ceiling (200k, 1M, etc.) from the Claude Code payload. Color shifts green → lime → yellow → orange → red as you fill.
+- **Live rate-limit display** - shows `%` used and time-until-reset for both the Claude.ai 5-hour and 7-day quotas. Hidden for API-key users.
+- **Cache-hit percentage** - parses the session transcript to compute the fraction of input tokens served from the prompt cache. Size-keyed cache keeps repaints cheap (typical render: 5–20 ms).
+- **Effort badge** - `LO`·`MD`·`HI`·`XH`·`MX` color-coded from cheap → cost-danger, read from `~/.claude/settings.json.effortLevel`.
+- **Git-aware** - directory name + branch, orange `●` for uncommitted changes, worktree badge when applicable.
+- **Conditional badges** - vim mode (INS/NRM), subagent name, git worktree, non-default output style.
+- **Zero dependencies** - pure Node.js standard library. No npm install, no background daemons.
+- **Non-destructive install** - backs up `~/.claude/settings.json` with a timestamped filename before touching it. Leaves hooks, plugins, env, and permissions untouched.
 
 ## Install
 
-### Option 1 — One-liner via npx (recommended)
+### Option 1 - One-liner via npx (recommended)
 
 ```bash
 npx claude-status
@@ -31,7 +32,7 @@ npx claude-status
 
 This runs the installer from the npm package. No clone required. Re-run any time to update to the latest version.
 
-### Option 2 — From source
+### Option 2 - From source
 
 ```bash
 git clone https://github.com/waelmas/claude-status.git
@@ -39,7 +40,7 @@ cd claude-status
 node install.js
 ```
 
-After either install path, start a new Claude Code session (or reload) — the new status line appears on the next prompt.
+After either install path, start a new Claude Code session (or reload) - the new status line appears on the next prompt.
 
 ### What the installer does
 
@@ -70,7 +71,7 @@ Left to right, separated by `┃`:
 
 | Segment | Example | Meaning |
 |---|---|---|
-| **Project + branch** | `agents-control-hub on main●` | Directory name + git branch. Orange `●` = uncommitted changes. Branch truncates at 22 chars. |
+| **Project + branch** | `claude-status on main●` | Directory name + git branch. Orange `●` = uncommitted changes. Branch truncates at 22 chars. |
 | **Model + effort** | `Opus 4.7 XH` | Model name (strips parentheticals like `(1M context)`). Badge = effort level: `LO`·`MD`·`HI`·`XH`·`MX`, colored from meh (gray) → cost-danger (red). |
 | **Context bar** | `[██░░░░░░] 28.4% 284k/1.0M` | Fill bar for context-window usage. Color shifts green → lime → yellow → orange → red as you fill. Ceiling adapts to the active model. |
 | **Rate limits** | `5h:50%·3h  7d:54%·2d4h` | Claude.ai subscription quotas. `%` used + time until reset. Hidden for API-key users. |
@@ -79,11 +80,11 @@ Left to right, separated by `┃`:
 
 ### How the numbers are computed
 
-- **Context %, used, ceiling** — read directly from Claude Code's statusline JSON payload (`context_window.used_percentage`, `context_window_size`, etc.). Model-aware; no hardcoded 200k.
-- **Billed input / output** — `context_window.total_input_tokens` / `total_output_tokens`. These track *uncached* input — what you actually pay for.
-- **Cache-hit %** — computed by parsing the session transcript JSONL and summing `cache_read_input_tokens` across all assistant turns. Formula: `cache_read / (cache_read + cache_creation + fresh_input)`. Cache-creation is in the denominator because those tokens *are* billed (at the write rate). Cached by transcript file size to keep repaints cheap.
-- **Rate-limit `%` and reset time** — read from `rate_limits.{five_hour,seven_day}.{used_percentage,resets_at}`.
-- **Effort badge** — read from `~/.claude/settings.json.effortLevel`. Per-session `--effort` CLI overrides are *not* reflected — only the persistent setting.
+- **Context %, used, ceiling** - read directly from Claude Code's statusline JSON payload (`context_window.used_percentage`, `context_window_size`, etc.). Model-aware; no hardcoded 200k.
+- **Billed input / output** - `context_window.total_input_tokens` / `total_output_tokens`. These track *uncached* input - what you actually pay for.
+- **Cache-hit %** - computed by parsing the session transcript JSONL and summing `cache_read_input_tokens` across all assistant turns. Formula: `cache_read / (cache_read + cache_creation + fresh_input)`. Cache-creation is in the denominator because those tokens *are* billed (at the write rate). Cached by transcript file size to keep repaints cheap.
+- **Rate-limit `%` and reset time** - read from `rate_limits.{five_hour,seven_day}.{used_percentage,resets_at}`.
+- **Effort badge** - read from `~/.claude/settings.json.effortLevel`. Per-session `--effort` CLI overrides are *not* reflected - only the persistent setting.
 
 ### What resets when
 
@@ -99,11 +100,11 @@ So: drop in context bar + stable session totals = compaction. Everything at zero
 
 All styling lives at the top of `statusline.js`:
 
-- **Colors** — edit the ANSI color constants (`GREEN`, `YELLOW`, `ORANGE`, etc.). They use 256-color codes (`c(n)`), so you can swap any to your preferred hue.
-- **Thresholds** — `ctxBar()` defines when the bar turns lime / yellow / orange / red. `fmtRL()` defines the same for rate-limit colors. `cacheHitPct` thresholds are inline where the cached-% is rendered.
-- **Effort badge labels / colors** — `EFFORT_MAP` object. Change `LO`·`MD`·`HI`·`XH`·`MX` labels or their colors.
-- **Segment order / separator** — scroll to the bottom where `parts` is assembled. Reorder the `parts.push(...)` calls to taste. `SEP` defines the group separator.
-- **Branch / model truncation** — `branch.length > 22` and `modelShort.length > 20`. Adjust for your terminal width.
+- **Colors** - edit the ANSI color constants (`GREEN`, `YELLOW`, `ORANGE`, etc.). They use 256-color codes (`c(n)`), so you can swap any to your preferred hue.
+- **Thresholds** - `ctxBar()` defines when the bar turns lime / yellow / orange / red. `fmtRL()` defines the same for rate-limit colors. `cacheHitPct` thresholds are inline where the cached-% is rendered.
+- **Effort badge labels / colors** - `EFFORT_MAP` object. Change `LO`·`MD`·`HI`·`XH`·`MX` labels or their colors.
+- **Segment order / separator** - scroll to the bottom where `parts` is assembled. Reorder the `parts.push(...)` calls to taste. `SEP` defines the group separator.
+- **Branch / model truncation** - `branch.length > 22` and `modelShort.length > 20`. Adjust for your terminal width.
 
 ## How Claude Code statusline scripts work
 
@@ -132,7 +133,7 @@ The payload includes (among other fields):
 }
 ```
 
-Rendering a status line is pure formatting — almost every number you'd want is pre-computed by Claude Code. The only exception is the cache-hit %, which requires summing per-turn values across the transcript JSONL.
+Rendering a status line is pure formatting - almost every number you'd want is pre-computed by Claude Code. The only exception is the cache-hit %, which requires summing per-turn values across the transcript JSONL.
 
 ## Performance
 
@@ -159,7 +160,7 @@ Or manually:
 ## FAQ
 
 **Q: Does claude-status work with both Claude.ai subscriptions and API keys?**
-A: Yes. Rate-limit segments are automatically hidden when the `rate_limits` field is absent from the payload (the API-key case). Everything else — context window, model, cache stats — works identically.
+A: Yes. Rate-limit segments are automatically hidden when the `rate_limits` field is absent from the payload (the API-key case). Everything else - context window, model, cache stats - works identically.
 
 **Q: Does it work with Claude Code plugins, hooks, or output styles?**
 A: Yes. The installer only touches the `statusLine` key in `settings.json`. Hooks, plugins, permissions, env vars, and output styles are preserved. Non-default output styles show up as a `✳ style-name` badge.
@@ -180,7 +181,7 @@ A: No. It's an independent open-source project. Claude Code is Anthropic's offic
 A: Yes, on Windows with Node.js installed. The installer uses cross-platform path joins. On Windows, the temp cache lives in `%TEMP%` instead of `/tmp`. Git commands work via the system `git` on PATH.
 
 **Q: How do I change colors or the segment order?**
-A: Edit `~/.claude/statusline-command.js` directly after install — color constants and the `parts.push(...)` assembly are at the top and bottom of the file respectively. See the **Customize** section above.
+A: Edit `~/.claude/statusline-command.js` directly after install - color constants and the `parts.push(...)` assembly are at the top and bottom of the file respectively. See the **Customize** section above.
 
 **Q: Will heavy transcript parsing slow down my prompt?**
 A: No. The cache-hit % calculation is memoized by transcript file size and stored in `os.tmpdir()`. A repaint with no new assistant turns is effectively free. Full typical render time is 5–20 ms.
@@ -191,4 +192,4 @@ Issues and PRs welcome at [github.com/waelmas/claude-status](https://github.com/
 
 ## License
 
-MIT — see [LICENSE](./LICENSE).
+MIT - see [LICENSE](./LICENSE).
