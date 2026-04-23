@@ -1,0 +1,28 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*~
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.yarn
+
+# Build artifacts (none expected, but safe to ignore)
+dist/
+build/
+
+# Local env
+.env
+.env.local
+
+# Local testing scratch
+*.local.*

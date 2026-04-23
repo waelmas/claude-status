@@ -1,0 +1,55 @@
+{
+  "name": "claude-status",
+  "version": "0.1.0",
+  "description": "A compact, information-dense status line for Claude Code. Shows context window usage, rate limits, prompt cache hit percentage, model, effort level, git branch, and session token totals. Zero dependencies.",
+  "bin": {
+    "claude-status": "./install.js"
+  },
+  "main": "statusline.js",
+  "files": [
+    "install.js",
+    "statusline.js",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "install-statusline": "node install.js",
+    "uninstall-statusline": "node install.js uninstall"
+  },
+  "keywords": [
+    "claude-code",
+    "claude",
+    "anthropic",
+    "statusline",
+    "status-line",
+    "status-bar",
+    "claude-code-statusline",
+    "cli",
+    "terminal",
+    "ansi",
+    "context-window",
+    "rate-limit",
+    "prompt-cache",
+    "cache-hit",
+    "developer-tools",
+    "zero-dependencies"
+  ],
+  "homepage": "https://github.com/waelmas/claude-status#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/waelmas/claude-status.git"
+  },
+  "bugs": {
+    "url": "https://github.com/waelmas/claude-status/issues"
+  },
+  "author": "Wael Masri",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14"
+  },
+  "os": [
+    "darwin",
+    "linux",
+    "win32"
+  ]
+}
